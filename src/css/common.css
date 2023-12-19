@@ -35,3 +35,18 @@ img {
 .label {
   font-size: 20px;
 }
+
+.conteiner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.button {
+  padding: 5px 15px;
+  font-size: 20px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  cursor: pointer;
+}
