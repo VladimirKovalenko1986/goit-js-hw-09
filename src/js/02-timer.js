@@ -13,6 +13,7 @@ const refs = {
 };
 
 let timerId = null;
+let isTimerStopped = false;
 
 const options = {
   enableTime: true,
@@ -20,10 +21,13 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (selectedDates[0] < options.defaultDate) {
+    const selectedDate = selectedDates[0];
+
+    if (selectedDate < new Date()) {
       Notiflix.Notify.failure('Please choose a date in the future');
+      refs.startBtn.setAttribute('disabled', '');
     } else {
-      options.defaultDate = selectedDates[0];
+      options.defaultDate = selectedDate;
       refs.startBtn.removeAttribute('disabled', '');
     }
   },
@@ -36,21 +40,23 @@ refs.startBtn.setAttribute('disabled', '');
 refs.startBtn.addEventListener('click', onClickTimer);
 
 function onClickTimer() {
-  const selectedDate = refs.inputDate.value;
-  const ms = new Date(selectedDate) - Date.now();
+  timerId = setInterval(() => {
+    const selectedDate = refs.inputDate.value;
+    const ms = new Date(selectedDate) - Date.now();
 
-  const convertDate = convertMs(ms);
+    if (ms < 0) {
+      stopInterval();
+      clearTimerPanel();
+      return;
+    }
 
-  refs.spanDays.textContent = convertDate.days;
-  refs.spanHours.textContent = convertDate.hours;
-  refs.spanMinutes.textContent = convertDate.minutes;
-  refs.spanSeconds.textContent = convertDate.seconds;
+    const convertDate = convertMs(ms);
 
-  if (ms <= 0) {
-    stopInterval();
-  }
-
-  timerId = setInterval(onClickTimer, 1000);
+    refs.spanDays.textContent = convertDate.days;
+    refs.spanHours.textContent = convertDate.hours;
+    refs.spanMinutes.textContent = convertDate.minutes;
+    refs.spanSeconds.textContent = convertDate.seconds;
+  }, 1000);
 }
 
 function convertMs(ms) {
@@ -78,6 +84,16 @@ function addLeadingZero(value) {
 }
 
 function stopInterval() {
-  clearInterval(timerId);
-  Notiflix.Notify.success('The timer has been stopped!');
+  if (!isTimerStopped) {
+    clearInterval(timerId);
+    isTimerStopped = true;
+    Notiflix.Notify.success('The timer has been stopped!');
+  }
+}
+
+function clearTimerPanel() {
+  refs.spanDays.textContent = '00';
+  refs.spanHours.textContent = '00';
+  refs.spanMinutes.textContent = '00';
+  refs.spanSeconds.textContent = '00';
 }
