@@ -11,6 +11,9 @@ body {
   color: #212121;
   line-height: 1.5;
 }
+a {
+  color: black;
+}
 
 img {
   display: block;
@@ -44,9 +47,25 @@ img {
   height: 100vh;
 }
 
-.button {
+.button-switch {
   padding: 5px 15px;
   font-size: 20px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid black;
+  color: white;
+}
+
+.button-start {
+  background-color: green;
+}
+
+.button-stop {
+  background-color: red;
+}
+
+.button-switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

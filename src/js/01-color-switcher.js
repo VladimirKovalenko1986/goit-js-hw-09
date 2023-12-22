@@ -5,17 +5,17 @@ const refs = {
 };
 
 let colorInterval = '';
-let statusBtn = true;
+let isActive = false;
 
-refs.startBtn.disabled = !statusBtn;
-refs.stopBtn.disabled = statusBtn;
+refs.startBtn.disabled = isActive;
+refs.stopBtn.disabled = !isActive;
 
 refs.startBtn.addEventListener('click', onStartMovinColor);
 refs.stopBtn.addEventListener('click', onStopMovinColor);
 
 function onStartMovinColor() {
-  refs.stopBtn.disabled = !statusBtn;
-  refs.startBtn.disabled = statusBtn;
+  refs.stopBtn.disabled = isActive;
+  refs.startBtn.disabled = !isActive;
 
   colorInterval = setInterval(onRandomColor, 1000);
 }
@@ -31,8 +31,8 @@ function onRandomColor() {
 }
 
 function onStopMovinColor() {
-  refs.startBtn.disabled = !statusBtn;
-  refs.stopBtn.disabled = statusBtn;
+  refs.startBtn.disabled = isActive;
+  refs.stopBtn.disabled = !isActive;
 
   clearInterval(colorInterval);
 }
